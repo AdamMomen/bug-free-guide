@@ -1,8 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import useSWR from "swr";
+import useSWRMutation from "swr/mutation";
 
+import { HistoryList } from "@/components/history-list";
 import type { Assumption, Commit } from "@/lib/domain/types";
 
 async function commitsFetcher(url: string): Promise<Commit[]> {
@@ -10,6 +12,34 @@ async function commitsFetcher(url: string): Promise<Commit[]> {
   if (!res.ok) throw new Error("Failed to load versions");
   const data: unknown = await res.json();
   return Array.isArray(data) ? (data as Commit[]) : [];
+}
+
+type CommitSaveArg = { message: string; assumptions: Assumption[] };
+
+async function commitSaveFetcher(
+  url: string,
+  { arg }: { arg: CommitSaveArg },
+): Promise<void> {
+  const res = await fetch(url, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      message: arg.message.trim(),
+      assumptions: arg.assumptions,
+    }),
+  });
+  const data = (await res.json().catch(() => ({}))) as {
+    error?: string;
+    issues?: unknown;
+  };
+  if (!res.ok) {
+    const detail = typeof data.error === "string" ? data.error : "Save failed";
+    throw new Error(
+      data.issues != null
+        ? `${detail}: ${JSON.stringify(data.issues)}`
+        : detail,
+    );
+  }
 }
 
 function CommitsListSkeleton() {
@@ -39,40 +69,32 @@ export function VersioningPanel({ assumptions }: { assumptions: Assumption[] }) 
     isLoading,
     mutate,
   } = useSWR<Commit[]>("/api/commits", commitsFetcher);
+  const {
+    trigger: saveVersion,
+    isMutating,
+    error: saveError,
+    reset: resetSaveMutation,
+  } = useSWRMutation("/api/commit", commitSaveFetcher, {
+    onSuccess: () => {
+      void mutate();
+    },
+  });
   const [message, setMessage] = useState("");
-  const [busy, setBusy] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [compareSelection, setCompareSelection] = useState<string[]>([]);
+
+  /** Drop ids that disappeared from the server list without syncing in an effect (lint-safe). */
+  const compareSelectionVisible = useMemo(() => {
+    if (commits === undefined) return compareSelection;
+    const valid = new Set(commits.map((c) => c.id));
+    return compareSelection.filter((id) => valid.has(id));
+  }, [commits, compareSelection]);
 
   async function handleSaveVersion() {
-    setError(null);
-    setBusy(true);
     try {
-      const res = await fetch("/api/commit", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          message: message.trim(),
-          assumptions,
-        }),
-      });
-      const data = (await res.json().catch(() => ({}))) as {
-        error?: string;
-        issues?: unknown;
-      };
-      if (!res.ok) {
-        const detail =
-          typeof data.error === "string" ? data.error : "Save failed";
-        setError(
-          data.issues != null
-            ? `${detail}: ${JSON.stringify(data.issues)}`
-            : detail,
-        );
-        return;
-      }
+      await saveVersion({ message, assumptions });
       setMessage("");
-      await mutate();
-    } finally {
-      setBusy(false);
+    } catch {
+      /* error surfaced via saveError */
     }
   }
 
@@ -87,24 +109,27 @@ export function VersioningPanel({ assumptions }: { assumptions: Assumption[] }) 
           <input
             type="text"
             value={message}
-            onChange={(e) => setMessage(e.target.value)}
+            onChange={(e) => {
+              resetSaveMutation();
+              setMessage(e.target.value);
+            }}
             placeholder="Describe this version…"
             className="rounded-md border border-zinc-300 bg-white px-2 py-1.5 text-sm text-zinc-900 dark:border-zinc-600 dark:bg-zinc-900 dark:text-zinc-100"
-            disabled={busy}
+            disabled={isMutating}
           />
         </label>
         <button
           type="button"
-          disabled={busy || message.trim().length === 0}
+          disabled={isMutating || message.trim().length === 0}
           onClick={() => void handleSaveVersion()}
           className="rounded-md bg-emerald-700 px-3 py-2 text-xs font-medium text-white hover:bg-emerald-600 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-emerald-800 dark:hover:bg-emerald-700"
         >
-          {busy ? "Saving…" : "Save version"}
+          {isMutating ? "Saving…" : "Save version"}
         </button>
       </div>
-      {error ? (
+      {saveError ? (
         <p className="mb-3 rounded-md bg-red-50 px-2 py-1.5 text-xs text-red-800 dark:bg-red-950/50 dark:text-red-200">
-          {error}
+          {saveError.message}
         </p>
       ) : null}
       {loadError ? (
@@ -127,21 +152,11 @@ export function VersioningPanel({ assumptions }: { assumptions: Assumption[] }) 
           No saved versions yet.
         </p>
       ) : (
-        <ul className="max-h-48 space-y-2 overflow-y-auto text-sm">
-          {commits.map((c) => (
-            <li
-              key={c.id}
-              className="rounded-md border border-zinc-100 px-2 py-1.5 dark:border-zinc-800"
-            >
-              <span className="font-medium text-zinc-900 dark:text-zinc-100">
-                {c.message}
-              </span>
-              <span className="ml-2 font-mono text-xs text-zinc-400">
-                {new Date(c.createdAt).toLocaleString()}
-              </span>
-            </li>
-          ))}
-        </ul>
+        <HistoryList
+          commits={commits}
+          selectedIds={compareSelectionVisible}
+          onSelectedIdsChange={setCompareSelection}
+        />
       )}
     </section>
   );

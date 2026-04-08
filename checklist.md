@@ -4,6 +4,7 @@
 - [x] Next.js is already set up
 - [x] Tailwind CSS is already set up
 - [x] Use **pnpm** for all package management and scripts
+- [x] Client-side **network calls** use **SWR** (`useSWR` / `useSWRMutation`); show **skeleton** UI while the initial load has no data
 - [ ] Every step must end with **verification**
 - [ ] No feature is considered done until:
   - [ ] implementation is complete
@@ -31,6 +32,7 @@
 
 ### Recommended package installs
 - [x] `pnpm add zod`
+- [x] `pnpm add swr`
 - [x] `pnpm add -D vitest @vitest/coverage-v8 jsdom @testing-library/react @testing-library/jest-dom @testing-library/user-event @types/node`
 
 ### Required `package.json` scripts
@@ -289,10 +291,10 @@ User can save current draft as a new version.
 ### Tasks
 - [x] add save version button
 - [x] add commit message input/modal
-- [x] send assumptions to API
+- [x] send assumptions to API (via **`useSWRMutation`**)
 - [x] server recomputes outputs
 - [x] server persists full snapshot
-- [x] UI refreshes commit list
+- [x] UI refreshes commit list (`mutate()` on `/api/commits` after successful save)
 
 ### Verification
 - [x] inspect route and UI files
@@ -323,32 +325,32 @@ User can save current draft as a new version.
 Render ordered version history from stored commits.
 
 ### Files
-- [ ] `components/history-list.tsx`
-- [ ] `app/history/page.tsx` or section in main page
+- [x] `src/components/history-list.tsx`
+- [x] section in main page (`VersioningPanel` on `src/app/page.tsx`; optional `/history` route deferred)
 
 ### Tasks
-- [ ] fetch commits
-- [ ] render newest first
-- [ ] display message + timestamp
-- [ ] allow selecting 2 commits for compare
+- [x] load commits with **`useSWR`**; **skeleton** list while `isLoading` / no data
+- [x] render newest first
+- [x] display message + timestamp
+- [x] allow selecting 2 commits for compare
 
 ### Verification
-- [ ] inspect files
-- [ ] run `pnpm typecheck`
-- [ ] run `pnpm test`
+- [x] inspect files
+- [x] run `pnpm typecheck`
+- [x] run `pnpm test`
 - [ ] manual browser verification:
   - [ ] commit list renders
   - [ ] order is correct
   - [ ] user can select versions
 
 ### Tests
-- [ ] history list component test optional
-- [ ] store tests already support data validity
+- [x] `src/lib/compare-selection.test.ts` (selection toggle / cap behavior)
+- [x] store tests already support data validity
 
 ### Done when
-- [ ] history visible and selectable
+- [x] history visible and selectable
 - [ ] manual verification complete
-- [ ] `pnpm typecheck` passes
+- [x] `pnpm typecheck` passes
 
 ---
 
@@ -505,7 +507,7 @@ User clicks ARR and sees clear explanation.
 
 ### Tasks
 - [ ] add click action from metric diff row
-- [ ] fetch explanation
+- [ ] fetch explanation (**`useSWR`** or `useSWRMutation` as appropriate; **skeleton** while loading)
 - [ ] render:
   - [ ] old value
   - [ ] new value
