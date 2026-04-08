@@ -432,33 +432,33 @@ User can compare two selected versions and see semantic diff.
 Encode causal paths from assumptions to metrics.
 
 ### Files
-- [ ] `lib/domain/explain.ts` or separate `lib/domain/deps.ts`
+- [x] `src/lib/domain/deps.ts` (Step 12 will add `explain.ts`)
 
 ### Tasks
-- [ ] hardcode dependency map:
-  - [ ] `conversion_rate -> customers`
-  - [ ] `launch_month_offset -> customers`
-  - [ ] `monthly_traffic -> customers`
-  - [ ] `customers -> mrr`
-  - [ ] `arpu -> mrr`
-  - [ ] `mrr -> arr`
-  - [ ] `monthly_burn -> runway`
-  - [ ] `starting_cash -> runway`
+- [x] hardcode dependency map:
+  - [x] `conversion_rate -> customers`
+  - [x] `launch_month_offset -> customers`
+  - [x] `monthly_traffic -> customers`
+  - [x] `customers -> mrr`
+  - [x] `arpu -> mrr`
+  - [x] `mrr -> arr`
+  - [x] `monthly_burn -> runway`
+  - [x] `starting_cash -> runway`
 
 ### Verification
-- [ ] inspect dependency map file
-- [ ] run `pnpm typecheck`
-- [ ] add unit test for expected edges
+- [x] inspect dependency map file
+- [x] run `pnpm typecheck`
+- [x] add unit test for expected edges
 
 ### Tests
-- [ ] `deps.test.ts`
-  - [ ] expected relationships present
-  - [ ] no missing path to ARR
+- [x] `src/lib/domain/deps.test.ts`
+  - [x] expected relationships present
+  - [x] no missing path to ARR
 
 ### Done when
-- [ ] tests pass
-- [ ] map reviewed
-- [ ] `pnpm typecheck` passes
+- [x] tests pass
+- [x] map reviewed
+- [x] `pnpm typecheck` passes
 
 ---
 

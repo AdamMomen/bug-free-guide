@@ -1,3 +1,4 @@
+import { OUTPUT_METRIC_KEYS } from "@/lib/domain/deps";
 import { SEED_ASSUMPTION_KEYS } from "@/lib/domain/model";
 import type {
   Assumption,
@@ -38,15 +39,6 @@ function orderedAssumptionKeys(
   }
   return ordered;
 }
-
-/** Output row order aligned with `calculateOutputs`. */
-const OUTPUT_METRIC_KEYS = [
-  "customers",
-  "mrr",
-  "arr",
-  "monthly_burn",
-  "runway",
-] as const;
 
 function orderedMetricKeys(
   previous: OutputMetric[],
