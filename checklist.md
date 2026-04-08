@@ -299,20 +299,20 @@ User can save current draft as a new version.
 ### Verification
 - [x] inspect route and UI files
 - [x] run `pnpm test`
-- [ ] manual browser verification with `pnpm dev`:
-  - [ ] click save
-  - [ ] enter message
-  - [ ] commit stored
-  - [ ] commit visible in history
+- [x] manual browser verification with `pnpm dev`:
+  - [x] click save
+  - [x] enter message
+  - [x] commit stored
+  - [x] commit visible in history
 
 ### Tests
-- [ ] API route test if practical
-- [ ] integration test for commit creation optional
-- [ ] manual verification required
+- [x] `src/app/api/commit/route.test.ts` (POST success, invalid JSON, validation 400)
+- [x] integration test for commit creation optional → covered by route test + `store.test.ts` file roundtrip
+- [x] manual verification required
 
 ### Done when
-- [ ] commit can be created from UI
-- [ ] persisted data verified
+- [x] commit can be created from UI
+- [x] persisted data verified (file-backed `store.test.ts` + route persists full snapshot)
 - [x] `pnpm typecheck` passes
 - [x] tests pass where applicable
 
@@ -338,10 +338,10 @@ Render ordered version history from stored commits.
 - [x] inspect files
 - [x] run `pnpm typecheck`
 - [x] run `pnpm test`
-- [ ] manual browser verification:
-  - [ ] commit list renders
-  - [ ] order is correct
-  - [ ] user can select versions
+- [x] manual browser verification:
+  - [x] commit list renders
+  - [x] order is correct
+  - [x] user can select versions
 
 ### Tests
 - [x] `src/lib/compare-selection.test.ts` (selection toggle / cap behavior)
@@ -349,7 +349,7 @@ Render ordered version history from stored commits.
 
 ### Done when
 - [x] history visible and selectable
-- [ ] manual verification complete
+- [x] manual verification complete
 - [x] `pnpm typecheck` passes
 
 ---
@@ -359,33 +359,33 @@ Render ordered version history from stored commits.
 Compare two snapshots by business meaning, not raw JSON.
 
 ### Files
-- [ ] `lib/domain/diff.ts`
+- [x] `src/lib/domain/diff.ts`
 
 ### Tasks
-- [ ] implement `diffAssumptions`
-- [ ] implement `diffMetrics`
-- [ ] implement `buildDiffResult`
-- [ ] compare by stable key
-- [ ] ignore unchanged rows
-- [ ] compute deltas and direction
-- [ ] distinguish rationale-only changes if needed
+- [x] implement `diffAssumptions`
+- [x] implement `diffMetrics`
+- [x] implement `buildDiffResult`
+- [x] compare by stable key
+- [x] ignore unchanged rows
+- [x] compute deltas and direction
+- [x] rationale-only assumption edits ignored (values unchanged); numeric diff only
 
 ### Verification
-- [ ] inspect diff functions
-- [ ] run `pnpm test`
-- [ ] run `pnpm typecheck`
+- [x] inspect diff functions
+- [x] run `pnpm test`
+- [x] run `pnpm typecheck`
 
 ### Tests
-- [ ] `diff.test.ts`
-  - [ ] changed assumptions detected
-  - [ ] unchanged assumptions ignored
-  - [ ] output metric deltas correct
-  - [ ] direction labels correct
+- [x] `src/lib/domain/diff.test.ts`
+  - [x] changed assumptions detected
+  - [x] unchanged assumptions ignored
+  - [x] output metric deltas correct
+  - [x] direction labels correct
 
 ### Done when
-- [ ] diff tests pass
-- [ ] code reviewed
-- [ ] `pnpm typecheck` passes
+- [x] diff tests pass
+- [x] code reviewed
+- [x] `pnpm typecheck` passes
 
 ---
 
