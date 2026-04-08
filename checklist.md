@@ -205,33 +205,35 @@ Render assumptions and computed outputs on screen.
 Validate assumptions and commit payloads early.
 
 ### Files
-- [ ] `lib/domain/schema.ts` or `lib/domain/types.ts`
+- [x] `src/lib/domain/schema.ts`
 - [ ] API route files later
 
 ### Tasks
-- [ ] add Zod schema for assumptions
-- [ ] add Zod schema for commit request
-- [ ] validate:
-  - [ ] percentage range
-  - [ ] positive burn
-  - [ ] non-empty rationale
-  - [ ] valid keys only
+- [x] add Zod schema for assumptions
+- [x] add Zod schema for commit request
+- [x] validate:
+  - [x] percentage range
+  - [x] positive burn
+  - [x] non-empty rationale
+  - [x] valid keys only
 
 ### Verification
-- [ ] inspect schema file
-- [ ] run `pnpm test`
-- [ ] run `pnpm typecheck`
+- [x] inspect schema file
+- [x] run `pnpm test`
+- [x] run `pnpm typecheck`
 
 ### Tests
-- [ ] `schema.test.ts`
-  - [ ] valid payload accepted
-  - [ ] invalid conversion rejected
-  - [ ] missing rationale rejected
+- [x] `schema.test.ts`
+  - [x] valid payload accepted
+  - [x] invalid conversion rejected
+  - [x] missing rationale rejected
 
 ### Done when
-- [ ] tests pass
-- [ ] schema file reviewed
-- [ ] `pnpm typecheck` passes
+- [x] tests pass
+- [x] schema file reviewed
+- [x] `pnpm typecheck` passes
+
+**Notes:** `conversion_rate` is `(0, 1)`. `monthly_burn` must be **> 0** (stricter than calc’s `0` → ∞ runway). Bundle must have exactly six rows, one per `SEED_ASSUMPTION_KEYS`. `commitRequestSchema` is ready for Step 7 `POST /api/commit`.
 
 ---
 
