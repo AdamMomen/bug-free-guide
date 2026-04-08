@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 
 import { AssumptionsTable } from "@/components/assumptions-table";
 import { OutputCards } from "@/components/output-cards";
+import { TutorialTour } from "@/components/tutorial-tour";
 import { VersioningPanel } from "@/components/versioning-panel";
 import { calculateOutputs } from "@/lib/domain/calc";
 import { createSeedAssumptions } from "@/lib/domain/model";
@@ -51,7 +52,7 @@ export default function Home() {
         <div className="mx-auto flex max-w-5xl flex-wrap items-center justify-between gap-3">
           <div>
             <h1 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50">
-              Finance Memory Git
+              Finance Memory For Reasoning
             </h1>
             <p className="text-xs text-zinc-500 dark:text-zinc-400">
               Outputs follow the draft. <strong>Save baseline</strong> only
@@ -61,43 +62,59 @@ export default function Home() {
             </p>
           </div>
           <div className="flex flex-wrap items-center gap-2">
-            {isDirty ? (
-              <span className="rounded-full bg-amber-100 px-2.5 py-1 text-xs font-medium text-amber-900 dark:bg-amber-950/80 dark:text-amber-100">
-                Unsaved changes
-              </span>
-            ) : (
-              <span className="rounded-full bg-emerald-100 px-2.5 py-1 text-xs font-medium text-emerald-900 dark:bg-emerald-950/80 dark:text-emerald-100">
-                In sync with baseline
-              </span>
-            )}
-            <button
-              type="button"
-              title="Discard edits and reload the last saved baseline into the form"
-              className="rounded-md border border-zinc-300 bg-white px-3 py-1.5 text-xs font-medium text-zinc-800 hover:bg-zinc-50 dark:border-zinc-600 dark:bg-zinc-900 dark:text-zinc-200 dark:hover:bg-zinc-800"
-              onClick={() => setDraft(cloneAssumptions(saved))}
+            <TutorialTour
+              trigger={(start) => (
+                <button
+                  type="button"
+                  className="rounded-md border border-violet-300 bg-violet-50 px-3 py-1.5 text-xs font-medium text-violet-900 hover:bg-violet-100 dark:border-violet-800 dark:bg-violet-950/60 dark:text-violet-100 dark:hover:bg-violet-950"
+                  onClick={start}
+                >
+                  Guided tour
+                </button>
+              )}
+            />
+            <div
+              className="flex flex-wrap items-center gap-2"
+              data-tutorial="baseline"
             >
-              Revert to baseline
-            </button>
-            <button
-              type="button"
-              title="Store current values as the new baseline (pill turns green; fields stay as-is)"
-              className="rounded-md bg-zinc-900 px-3 py-1.5 text-xs font-medium text-white hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200"
-              onClick={() => setSaved(cloneAssumptions(draft))}
-            >
-              Save baseline
-            </button>
-            <button
-              type="button"
-              title="Reset both draft and baseline to the factory seed model"
-              className="rounded-md border border-zinc-300 bg-white px-3 py-1.5 text-xs font-medium text-zinc-800 hover:bg-zinc-50 dark:border-zinc-600 dark:bg-zinc-900 dark:text-zinc-200 dark:hover:bg-zinc-800"
-              onClick={() => {
-                const seed = cloneAssumptions(baseline);
-                setDraft(seed);
-                setSaved(cloneAssumptions(seed));
-              }}
-            >
-              Reset to seed
-            </button>
+              {isDirty ? (
+                <span className="rounded-full bg-amber-100 px-2.5 py-1 text-xs font-medium text-amber-900 dark:bg-amber-950/80 dark:text-amber-100">
+                  Unsaved changes
+                </span>
+              ) : (
+                <span className="rounded-full bg-emerald-100 px-2.5 py-1 text-xs font-medium text-emerald-900 dark:bg-emerald-950/80 dark:text-emerald-100">
+                  In sync with baseline
+                </span>
+              )}
+              <button
+                type="button"
+                title="Discard edits and reload the last saved baseline into the form"
+                className="rounded-md border border-zinc-300 bg-white px-3 py-1.5 text-xs font-medium text-zinc-800 hover:bg-zinc-50 dark:border-zinc-600 dark:bg-zinc-900 dark:text-zinc-200 dark:hover:bg-zinc-800"
+                onClick={() => setDraft(cloneAssumptions(saved))}
+              >
+                Revert to baseline
+              </button>
+              <button
+                type="button"
+                title="Store current values as the new baseline (pill turns green; fields stay as-is)"
+                className="rounded-md bg-zinc-900 px-3 py-1.5 text-xs font-medium text-white hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200"
+                onClick={() => setSaved(cloneAssumptions(draft))}
+              >
+                Save baseline
+              </button>
+              <button
+                type="button"
+                title="Reset both draft and baseline to the factory seed model"
+                className="rounded-md border border-zinc-300 bg-white px-3 py-1.5 text-xs font-medium text-zinc-800 hover:bg-zinc-50 dark:border-zinc-600 dark:bg-zinc-900 dark:text-zinc-200 dark:hover:bg-zinc-800"
+                onClick={() => {
+                  const seed = cloneAssumptions(baseline);
+                  setDraft(seed);
+                  setSaved(cloneAssumptions(seed));
+                }}
+              >
+                Reset to seed
+              </button>
+            </div>
           </div>
         </div>
       </header>

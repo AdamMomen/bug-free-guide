@@ -1,4 +1,4 @@
-# Finance Memory Git — Full Architecture (Mermaid + Checklist)
+# Finance Memory For Reasoning — Full Architecture (Mermaid + Checklist)
 
 ## Index
 - **D1** — System architecture

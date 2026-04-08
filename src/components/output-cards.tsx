@@ -44,7 +44,10 @@ export interface OutputCardsProps {
 
 export function OutputCards({ outputs }: OutputCardsProps) {
   return (
-    <section className="rounded-xl border border-zinc-200 bg-white p-4 shadow-sm dark:border-zinc-800 dark:bg-zinc-950">
+    <section
+      className="rounded-xl border border-zinc-200 bg-white p-4 shadow-sm dark:border-zinc-800 dark:bg-zinc-950"
+      data-tutorial="outputs"
+    >
       <h2 className="mb-3 text-sm font-semibold tracking-wide text-zinc-500 uppercase dark:text-zinc-400">
         Outputs
       </h2>

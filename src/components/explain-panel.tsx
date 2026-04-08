@@ -85,7 +85,10 @@ export function ExplainPanel({ data }: ExplainPanelProps) {
   const title = labelMetric(metricKey);
 
   return (
-    <div className="mt-4 rounded-lg border border-violet-200 bg-violet-50/60 p-4 dark:border-violet-900/60 dark:bg-violet-950/30">
+    <div
+      className="mt-4 rounded-lg border border-violet-200 bg-violet-50/60 p-4 dark:border-violet-900/60 dark:bg-violet-950/30"
+      data-tutorial="explain-panel"
+    >
       <h3 className="mb-1 text-sm font-semibold text-violet-900 dark:text-violet-100">
         Why {title} changed
       </h3>

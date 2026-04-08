@@ -1,5 +1,5 @@
 /**
- * Domain types for Finance Memory Git (assumptions, outputs, versioning, diff, explain).
+ * Domain types for Finance Memory For Reasoning (assumptions, outputs, versioning, diff, explain).
  */
 
 export interface Assumption {

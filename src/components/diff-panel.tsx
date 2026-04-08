@@ -117,7 +117,10 @@ export function DiffPanel({
   const { previous, next: nextVersion, diff } = data;
 
   return (
-    <div className="mt-4 rounded-lg border border-zinc-200 bg-zinc-50/80 p-4 dark:border-zinc-800 dark:bg-zinc-900/40">
+    <div
+      className="mt-4 rounded-lg border border-zinc-200 bg-zinc-50/80 p-4 dark:border-zinc-800 dark:bg-zinc-900/40"
+      data-tutorial="diff-panel"
+    >
       <h3 className="mb-2 text-sm font-semibold text-zinc-800 dark:text-zinc-100">
         Compare
       </h3>

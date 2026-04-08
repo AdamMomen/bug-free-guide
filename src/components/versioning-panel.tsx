@@ -226,7 +226,10 @@ export function VersioningPanel({ assumptions }: { assumptions: Assumption[] }) 
       <h2 className="mb-3 text-sm font-semibold tracking-wide text-zinc-500 uppercase dark:text-zinc-400">
         Versions
       </h2>
-      <div className="mb-4 flex flex-col gap-2 sm:flex-row sm:items-end">
+      <div
+        className="mb-4 flex flex-col gap-2 sm:flex-row sm:items-end"
+        data-tutorial="version-save"
+      >
         <label className="flex min-w-0 flex-1 flex-col gap-1 text-xs font-medium text-zinc-600 dark:text-zinc-300">
           Commit message
           <input
@@ -276,47 +279,49 @@ export function VersioningPanel({ assumptions }: { assumptions: Assumption[] }) 
         </p>
       ) : (
         <>
-          <HistoryList
-            commits={commits}
-            selectedIds={compareSelectionVisible}
-            onSelectedIdsChange={setSelectionAndClearCompare}
-          />
-          <div className="mt-3 flex flex-col gap-2">
-            <button
-              type="button"
-              disabled={
-                compareSelectionVisible.length !== 2 || compareBusy
-              }
-              onClick={() => void handleCompareSelected()}
-              className="self-start rounded-md border border-zinc-300 bg-white px-3 py-2 text-xs font-medium text-zinc-800 hover:bg-zinc-50 disabled:cursor-not-allowed disabled:opacity-50 dark:border-zinc-600 dark:bg-zinc-900 dark:text-zinc-200 dark:hover:bg-zinc-800"
-            >
-              {compareBusy ? "Comparing…" : "Compare selected versions"}
-            </button>
-            {compareError ? (
-              <p className="text-sm text-red-600 dark:text-red-400">
-                {compareError}
-              </p>
-            ) : null}
-            {comparePayload ? (
-              <DiffPanel
-                data={comparePayload}
-                onMetricRowClick={(key) => setExplainMetricKey(key)}
-                selectedMetricKey={explainMetricKey}
-              />
-            ) : null}
-            {explainMetricKey ? (
-              explainError ? (
-                <p className="mt-2 text-sm text-red-600 dark:text-red-400">
-                  {explainError instanceof Error
-                    ? explainError.message
-                    : "Explain failed"}
+          <div className="flex flex-col gap-2" data-tutorial="version-compare">
+            <HistoryList
+              commits={commits}
+              selectedIds={compareSelectionVisible}
+              onSelectedIdsChange={setSelectionAndClearCompare}
+            />
+            <div className="mt-3 flex flex-col gap-2">
+              <button
+                type="button"
+                disabled={
+                  compareSelectionVisible.length !== 2 || compareBusy
+                }
+                onClick={() => void handleCompareSelected()}
+                className="self-start rounded-md border border-zinc-300 bg-white px-3 py-2 text-xs font-medium text-zinc-800 hover:bg-zinc-50 disabled:cursor-not-allowed disabled:opacity-50 dark:border-zinc-600 dark:bg-zinc-900 dark:text-zinc-200 dark:hover:bg-zinc-800"
+              >
+                {compareBusy ? "Comparing…" : "Compare selected versions"}
+              </button>
+              {compareError ? (
+                <p className="text-sm text-red-600 dark:text-red-400">
+                  {compareError}
                 </p>
-              ) : explainLoading ? (
-                <ExplainPanelSkeleton />
-              ) : explainData ? (
-                <ExplainPanel data={explainData} />
-              ) : null
-            ) : null}
+              ) : null}
+              {comparePayload ? (
+                <DiffPanel
+                  data={comparePayload}
+                  onMetricRowClick={(key) => setExplainMetricKey(key)}
+                  selectedMetricKey={explainMetricKey}
+                />
+              ) : null}
+              {explainMetricKey ? (
+                explainError ? (
+                  <p className="mt-2 text-sm text-red-600 dark:text-red-400">
+                    {explainError instanceof Error
+                      ? explainError.message
+                      : "Explain failed"}
+                  </p>
+                ) : explainLoading ? (
+                  <ExplainPanelSkeleton />
+                ) : explainData ? (
+                  <ExplainPanel data={explainData} />
+                ) : null
+              ) : null}
+            </div>
           </div>
         </>
       )}

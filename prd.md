@@ -1,4 +1,4 @@
-# Finance Memory Git — MVP PRD (One Pager)
+# Finance Memory For Reasoning — MVP PRD (One Pager)
 
 ## 1. Goal
 Build a minimal prototype that proves:
@@ -134,4 +134,4 @@ Must be:
 ---
 
 ## 11. Positioning
-Git for financial models, with reasoning behind every number.
+Financial memory for reasoning: versioned models with traceability behind every number.

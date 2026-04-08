@@ -1,4 +1,4 @@
-# Finance Memory Git — Step-by-Step Build + Verification Routine
+# Finance Memory For Reasoning — Step-by-Step Build + Verification Routine
 
 ## 0. Principles
 - [x] Next.js is already set up

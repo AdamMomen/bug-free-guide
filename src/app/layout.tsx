@@ -13,8 +13,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Finance Memory Git",
-  description: "Assumptions, deterministic outputs, versioning prototype",
+  title: "Finance Memory For Reasoning",
+  description:
+    "Assumptions, deterministic outputs, versioned memory, and causal explanations",
 };
 
 export default function RootLayout({
