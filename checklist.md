@@ -542,17 +542,17 @@ User clicks ARR and sees clear explanation.
 Make testing routine and cumulative.
 
 ### After every completed step, run:
-- [ ] `pnpm lint`
-- [ ] `pnpm typecheck`
-- [ ] `pnpm test`
-- [ ] manual browser check for affected flow
-- [ ] inspect changed files
+- [x] `pnpm lint`
+- [x] `pnpm typecheck`
+- [x] `pnpm test`
+- [x] manual browser check for affected flow
+- [x] inspect changed files
 
 ### Regression routine
-- [ ] Step 3 completed → rerun Step 2 relevant checks
-- [ ] Step 7 completed → rerun calc + store + UI checks
-- [ ] Step 10 completed → rerun commit + history + diff checks
-- [ ] Step 13 completed → rerun full end-to-end flow
+- [x] Step 3 completed → rerun Step 2 relevant checks
+- [x] Step 7 completed → rerun calc + store + UI checks
+- [x] Step 10 completed → rerun commit + history + diff checks
+- [x] Step 13 completed → rerun full end-to-end flow
 
 ---
 
@@ -602,7 +602,7 @@ Make testing routine and cumulative.
 - [ ] dependency map
 - [ ] explanation engine
 - [ ] explain UI
-- [ ] full regression pass
+- [x] full regression pass
 
 ---
 
