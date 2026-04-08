@@ -242,34 +242,36 @@ Validate assumptions and commit payloads early.
 Persist full snapshots for version history.
 
 ### Files
-- [ ] `lib/domain/store.ts`
-- [ ] optional `data/commits.json`
+- [x] `src/lib/domain/store.ts`
+- [x] `data/commits.json` (seed empty `commits` array)
 
 ### Tasks
-- [ ] implement `listCommits`
-- [ ] implement `createCommit`
-- [ ] implement `getCommitById`
-- [ ] store full snapshot
-- [ ] use immutable commit records
-- [ ] generate commit IDs
-- [ ] add timestamps
+- [x] implement `listCommits`
+- [x] implement `createCommit`
+- [x] implement `getCommitById`
+- [x] store full snapshot
+- [x] use immutable commit records
+- [x] generate commit IDs
+- [x] add timestamps
 
 ### Verification
-- [ ] inspect store file
-- [ ] test write/read roundtrip
-- [ ] if file-backed, inspect JSON file contents manually
-- [ ] run `pnpm typecheck`
+- [x] inspect store file
+- [x] test write/read roundtrip
+- [x] if file-backed, inspect JSON file contents manually
+- [x] run `pnpm typecheck`
 
 ### Tests
-- [ ] `store.test.ts`
-  - [ ] commit creation persists snapshot
-  - [ ] commit retrieval works
-  - [ ] list ordering works
+- [x] `store.test.ts`
+  - [x] commit creation persists snapshot
+  - [x] commit retrieval works
+  - [x] list ordering works
 
 ### Done when
-- [ ] `pnpm test` passes
-- [ ] stored snapshots inspected
-- [ ] `pnpm typecheck` passes
+- [x] `pnpm test` passes
+- [x] stored snapshots inspected
+- [x] `pnpm typecheck` passes
+
+**Notes:** `createCommitStore({ filePath })` uses `data/commits.json` shape `{ "commits": Commit[] }` (disk order oldest → newest; `listCommits` returns newest first). In-memory: `createCommitStore()`. Use `path.join(process.cwd(), DEFAULT_COMMITS_RELATIVE_PATH)` on the server (Step 7).
 
 ---
 
