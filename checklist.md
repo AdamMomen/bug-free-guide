@@ -166,21 +166,21 @@ Implement pure functions for customers, MRR, ARR, runway.
 Render assumptions and computed outputs on screen.
 
 ### Files
-- [ ] `app/page.tsx`
-- [ ] `components/assumptions-table.tsx`
-- [ ] `components/output-cards.tsx`
+- [x] `src/app/page.tsx`
+- [x] `src/components/assumptions-table.tsx`
+- [x] `src/components/output-cards.tsx`
 
 ### Tasks
-- [ ] render assumptions table
-- [ ] render output metric cards
-- [ ] wire assumptions to local draft state
-- [ ] recompute outputs on edit
-- [ ] show unsaved-change indicator
+- [x] render assumptions table
+- [x] render output metric cards
+- [x] wire assumptions to local draft state
+- [x] recompute outputs on edit
+- [x] show unsaved-change indicator
 
 ### Verification
-- [ ] inspect component files
-- [ ] run `pnpm typecheck`
-- [ ] run `pnpm test`
+- [x] inspect component files
+- [x] run `pnpm typecheck`
+- [x] run `pnpm test`
 - [ ] manual browser verification with `pnpm dev`:
   - [ ] page loads
   - [ ] assumptions display
@@ -193,8 +193,10 @@ Render assumptions and computed outputs on screen.
 
 ### Done when
 - [ ] browser behavior verified
-- [ ] `pnpm typecheck` passes
-- [ ] affected files reviewed
+- [x] `pnpm typecheck` passes
+- [x] affected files reviewed
+
+**Notes:** Page includes **Save baseline** / **Revert to baseline** so the unsaved pill has a clear meaning. On Apple Silicon + pnpm, `@tailwindcss/oxide-darwin-arm64` may be required for `pnpm build` if optional deps did not link.
 
 ---
 
