@@ -1,5 +1,6 @@
 import { z } from "zod";
 
+import { OUTPUT_METRIC_KEYS } from "@/lib/domain/deps";
 import { SEED_ASSUMPTION_KEYS, type SeedAssumptionKey } from "@/lib/domain/model";
 import type { Assumption } from "@/lib/domain/types";
 
@@ -135,8 +136,21 @@ export type CommitRequestInput = z.infer<typeof commitRequestSchema>;
 
 /** Body for `POST /api/compare` (Step 10); order does not matter — server sorts by `createdAt`. */
 export const compareRequestSchema = z.object({
-  commitIdA: z.string().uuid(),
-  commitIdB: z.string().uuid(),
+  commitIdA: z.uuid(),
+  commitIdB: z.uuid(),
 });
 
 export type CompareRequestInput = z.infer<typeof compareRequestSchema>;
+
+const outputMetricKeySchema = z.enum(
+  OUTPUT_METRIC_KEYS as unknown as [string, ...string[]],
+);
+
+/** Body for `POST /api/explain` (Step 13). */
+export const explainRequestSchema = z.object({
+  commitIdA: z.uuid(),
+  commitIdB: z.uuid(),
+  metricKey: outputMetricKeySchema,
+});
+
+export type ExplainRequestInput = z.infer<typeof explainRequestSchema>;

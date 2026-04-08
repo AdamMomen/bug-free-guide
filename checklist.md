@@ -467,32 +467,32 @@ Encode causal paths from assumptions to metrics.
 Given two commits and a metric, explain why it changed.
 
 ### Files
-- [ ] `lib/domain/explain.ts`
+- [x] `src/lib/domain/explain.ts`
 
 ### Tasks
-- [ ] implement `explainMetricChange`
-- [ ] identify changed assumptions
-- [ ] filter upstream assumptions only
-- [ ] build propagation path
-- [ ] include rationales
-- [ ] support ARR first; runway second if time
+- [x] implement `explainMetricChange`
+- [x] identify changed assumptions
+- [x] filter upstream assumptions only
+- [x] build propagation path
+- [x] include rationales (from newer snapshot rows)
+- [x] support ARR first; runway covered in tests
 
 ### Verification
-- [ ] inspect explain logic
-- [ ] run `pnpm test`
-- [ ] run `pnpm typecheck`
+- [x] inspect explain logic
+- [x] run `pnpm test`
+- [x] run `pnpm typecheck`
 
 ### Tests
-- [ ] `explain.test.ts`
-  - [ ] ARR explanation includes conversion when changed
-  - [ ] ARR explanation excludes unrelated burn
-  - [ ] propagation path is ordered correctly
-  - [ ] rationale included
+- [x] `src/lib/domain/explain.test.ts`
+  - [x] ARR explanation includes conversion when changed
+  - [x] ARR explanation excludes unrelated burn
+  - [x] propagation path is ordered correctly
+  - [x] rationale included
 
 ### Done when
-- [ ] explanation tests pass
-- [ ] code reviewed
-- [ ] `pnpm typecheck` passes
+- [x] explanation tests pass
+- [x] code reviewed
+- [x] `pnpm typecheck` passes
 
 ---
 
@@ -501,39 +501,39 @@ Given two commits and a metric, explain why it changed.
 User clicks ARR and sees clear explanation.
 
 ### Files
-- [ ] `app/api/explain/route.ts`
-- [ ] `components/explain-panel.tsx`
-- [ ] diff UI integration
+- [x] `src/app/api/explain/route.ts`
+- [x] `src/components/explain-panel.tsx`
+- [x] diff UI integration (`diff-panel` + `versioning-panel`)
 
 ### Tasks
-- [ ] add click action from metric diff row
-- [ ] fetch explanation (**`useSWR`** or `useSWRMutation` as appropriate; **skeleton** while loading)
-- [ ] render:
-  - [ ] old value
-  - [ ] new value
-  - [ ] changed assumptions
-  - [ ] propagation path
-  - [ ] rationale text
+- [x] add click action from metric diff row
+- [x] fetch explanation (**`useSWR`** with keyed `POST /api/explain`; **`ExplainPanelSkeleton`** while loading)
+- [x] render:
+  - [x] old value
+  - [x] new value
+  - [x] changed assumptions (upstream-only list)
+  - [x] propagation path
+  - [x] rationale text
 
 ### Verification
-- [ ] inspect route/component files
-- [ ] run `pnpm test`
-- [ ] manual browser verification:
-  - [ ] click ARR
-  - [ ] explanation opens
-  - [ ] upstream assumptions shown correctly
-  - [ ] rationale visible
-  - [ ] unrelated assumptions excluded
+- [x] inspect route/component files
+- [x] run `pnpm test`
+- [x] manual browser verification (http://localhost:3000):
+  - [x] click ARR
+  - [x] explanation opens
+  - [x] upstream assumptions shown correctly
+  - [x] rationale visible
+  - [x] unrelated assumptions excluded
 
 ### Tests
-- [ ] explain engine tests required
-- [ ] manual verification required
+- [x] `explain` engine tests (`explain.test.ts`) + `src/app/api/explain/route.test.ts`
+- [x] manual verification required
 
 ### Done when
-- [ ] UI answers “Why did ARR change?”
-- [ ] explanation behavior verified
-- [ ] `pnpm typecheck` passes
-- [ ] tests pass
+- [x] UI answers “Why did ARR change?” (after manual click-through)
+- [x] explanation behavior verified in browser
+- [x] `pnpm typecheck` passes
+- [x] tests pass
 
 ---
 

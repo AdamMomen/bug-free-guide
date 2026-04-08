@@ -5,8 +5,14 @@ import useSWR from "swr";
 import useSWRMutation from "swr/mutation";
 
 import { DiffPanel } from "@/components/diff-panel";
+import { ExplainPanel, ExplainPanelSkeleton } from "@/components/explain-panel";
 import { HistoryList } from "@/components/history-list";
-import type { Assumption, Commit, CompareApiResponse } from "@/lib/domain/types";
+import type {
+  Assumption,
+  Commit,
+  CompareApiResponse,
+  ExplainApiResponse,
+} from "@/lib/domain/types";
 
 async function commitsFetcher(url: string): Promise<Commit[]> {
   const res = await fetch(url);
@@ -16,6 +22,41 @@ async function commitsFetcher(url: string): Promise<Commit[]> {
 }
 
 type CommitSaveArg = { message: string; assumptions: Assumption[] };
+
+type ExplainSwrKey = readonly ["explain", string, string, string];
+
+async function explainFetcher(key: ExplainSwrKey): Promise<ExplainApiResponse> {
+  const [, commitIdA, commitIdB, metricKey] = key;
+  const res = await fetch("/api/explain", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ commitIdA, commitIdB, metricKey }),
+  });
+  const data = (await res.json().catch(() => ({}))) as {
+    error?: string;
+    issues?: unknown;
+  } & Partial<ExplainApiResponse>;
+  if (!res.ok) {
+    const detail =
+      typeof data.error === "string" ? data.error : "Explain failed";
+    throw new Error(
+      data.issues != null
+        ? `${detail}: ${JSON.stringify(data.issues)}`
+        : detail,
+    );
+  }
+  if (
+    data.explanation == null ||
+    data.metricKey == null ||
+    data.previousValue === undefined ||
+    data.nextValue === undefined ||
+    data.previous == null ||
+    data.next == null
+  ) {
+    throw new Error("Invalid explain response");
+  }
+  return data as ExplainApiResponse;
+}
 
 async function commitSaveFetcher(
   url: string,
@@ -87,6 +128,23 @@ export function VersioningPanel({ assumptions }: { assumptions: Assumption[] }) 
   );
   const [compareBusy, setCompareBusy] = useState(false);
   const [compareError, setCompareError] = useState<string | null>(null);
+  const [explainMetricKey, setExplainMetricKey] = useState<string | null>(null);
+
+  const explainSwrKey: ExplainSwrKey | null =
+    comparePayload && explainMetricKey
+      ? [
+          "explain",
+          comparePayload.previous.id,
+          comparePayload.next.id,
+          explainMetricKey,
+        ]
+      : null;
+
+  const {
+    data: explainData,
+    error: explainError,
+    isLoading: explainLoading,
+  } = useSWR(explainSwrKey, explainFetcher);
 
   /** Drop ids that disappeared from the server list without syncing in an effect (lint-safe). */
   const compareSelectionVisible = useMemo(() => {
@@ -108,6 +166,7 @@ export function VersioningPanel({ assumptions }: { assumptions: Assumption[] }) 
     setCompareSelection(ids);
     setComparePayload(null);
     setCompareError(null);
+    setExplainMetricKey(null);
   }
 
   async function handleCompareSelected() {
@@ -154,6 +213,7 @@ export function VersioningPanel({ assumptions }: { assumptions: Assumption[] }) 
         next: data.next,
         diff: data.diff,
       });
+      setExplainMetricKey(null);
     } catch {
       setCompareError("Compare request failed");
     } finally {
@@ -237,7 +297,26 @@ export function VersioningPanel({ assumptions }: { assumptions: Assumption[] }) 
                 {compareError}
               </p>
             ) : null}
-            {comparePayload ? <DiffPanel data={comparePayload} /> : null}
+            {comparePayload ? (
+              <DiffPanel
+                data={comparePayload}
+                onMetricRowClick={(key) => setExplainMetricKey(key)}
+                selectedMetricKey={explainMetricKey}
+              />
+            ) : null}
+            {explainMetricKey ? (
+              explainError ? (
+                <p className="mt-2 text-sm text-red-600 dark:text-red-400">
+                  {explainError instanceof Error
+                    ? explainError.message
+                    : "Explain failed"}
+                </p>
+              ) : explainLoading ? (
+                <ExplainPanelSkeleton />
+              ) : explainData ? (
+                <ExplainPanel data={explainData} />
+              ) : null
+            ) : null}
           </div>
         </>
       )}

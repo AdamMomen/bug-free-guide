@@ -76,3 +76,13 @@ export interface ExplanationResult {
   /** Free-text rationales (per step or parallel to path — UI decides layout) */
   rationales: string[];
 }
+
+/** `POST /api/explain` — same commit ordering as compare (older → newer). */
+export interface ExplainApiResponse {
+  previous: CompareCommitSummary;
+  next: CompareCommitSummary;
+  metricKey: string;
+  previousValue: number;
+  nextValue: number;
+  explanation: ExplanationResult;
+}

@@ -105,9 +105,15 @@ function trendLabel(direction: MetricTrend): string {
 
 export interface DiffPanelProps {
   data: CompareApiResponse;
+  onMetricRowClick?: (metricKey: string) => void;
+  selectedMetricKey?: string | null;
 }
 
-export function DiffPanel({ data }: DiffPanelProps) {
+export function DiffPanel({
+  data,
+  onMetricRowClick,
+  selectedMetricKey,
+}: DiffPanelProps) {
   const { previous, next: nextVersion, diff } = data;
 
   return (
@@ -187,6 +193,11 @@ export function DiffPanel({ data }: DiffPanelProps) {
           <h4 className="mb-2 text-xs font-semibold tracking-wide text-zinc-500 uppercase dark:text-zinc-400">
             Output changes
           </h4>
+          {onMetricRowClick ? (
+            <p className="mb-2 text-xs text-zinc-500 dark:text-zinc-400">
+              Click a row for a causal explanation (why this metric moved).
+            </p>
+          ) : null}
           <div className="overflow-x-auto rounded-md border border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-950">
             <table className="w-full min-w-[40rem] border-collapse text-left text-sm">
               <thead>
@@ -212,7 +223,32 @@ export function DiffPanel({ data }: DiffPanelProps) {
                 {diff.metricChanges.map((c) => (
                   <tr
                     key={c.key}
-                    className="border-b border-zinc-100 last:border-0 dark:border-zinc-800/80"
+                    role={onMetricRowClick ? "button" : undefined}
+                    tabIndex={onMetricRowClick ? 0 : undefined}
+                    onClick={
+                      onMetricRowClick
+                        ? () => onMetricRowClick(c.key)
+                        : undefined
+                    }
+                    onKeyDown={
+                      onMetricRowClick
+                        ? (e) => {
+                            if (e.key === "Enter" || e.key === " ") {
+                              e.preventDefault();
+                              onMetricRowClick(c.key);
+                            }
+                          }
+                        : undefined
+                    }
+                    className={`border-b border-zinc-100 last:border-0 dark:border-zinc-800/80 ${
+                      onMetricRowClick
+                        ? `cursor-pointer focus-visible:outline focus-visible:ring-2 focus-visible:ring-violet-500 ${
+                            selectedMetricKey === c.key
+                              ? "bg-violet-50 dark:bg-violet-950/35"
+                              : "hover:bg-zinc-50 dark:hover:bg-zinc-900/60"
+                          }`
+                        : ""
+                    }`}
                   >
                     <td className="py-2 pl-3 pr-2 font-medium text-zinc-900 dark:text-zinc-100">
                       {labelMetric(c.key)}
