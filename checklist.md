@@ -3,7 +3,7 @@
 ## 0. Principles
 - [x] Next.js is already set up
 - [x] Tailwind CSS is already set up
-- [ ] Use **pnpm** for all package management and scripts
+- [x] Use **pnpm** for all package management and scripts
 - [ ] Every step must end with **verification**
 - [ ] No feature is considered done until:
   - [ ] implementation is complete
@@ -24,23 +24,23 @@
 
 ## 1. Required pnpm Commands
 ### Baseline verification commands
-- [ ] `pnpm lint`
-- [ ] `pnpm typecheck`
-- [ ] `pnpm test`
-- [ ] `pnpm dev`
+- [x] `pnpm lint`
+- [x] `pnpm typecheck`
+- [x] `pnpm test`
+- [x] `pnpm dev`
 
 ### Recommended package installs
-- [ ] `pnpm add zod`
-- [ ] `pnpm add -D vitest @vitest/coverage-v8 jsdom @testing-library/react @testing-library/jest-dom @testing-library/user-event @types/node`
+- [x] `pnpm add zod`
+- [x] `pnpm add -D vitest @vitest/coverage-v8 jsdom @testing-library/react @testing-library/jest-dom @testing-library/user-event @types/node`
 
 ### Required `package.json` scripts
-- [ ] `"dev": "next dev"`
-- [ ] `"build": "next build"`
-- [ ] `"start": "next start"`
-- [ ] `"lint": "next lint"`
-- [ ] `"typecheck": "tsc --noEmit"`
-- [ ] `"test": "vitest run"`
-- [ ] `"test:watch": "vitest"`
+- [x] `"dev": "next dev"`
+- [x] `"build": "next build"`
+- [x] `"start": "next start"`
+- [x] `"lint": "eslint ."` (Next.js 16+ — use ESLint CLI; `next lint` removed)
+- [x] `"typecheck": "tsc --noEmit"`
+- [x] `"test": "vitest run"`
+- [x] `"test:watch": "vitest"`
 - [ ] `"test:ui": "vitest --ui"` optional
 
 ---
@@ -62,26 +62,26 @@ A step is only marked complete if all are true:
 Define exact TypeScript types for assumptions, outputs, commits, diffs, explanations.
 
 ### Files
-- [ ] `lib/domain/types.ts`
+- [x] `src/lib/domain/types.ts` (app uses `src/` + `@/*` path alias)
 
 ### Tasks
-- [ ] define `Assumption`
-- [ ] define `OutputMetric`
-- [ ] define `ModelSnapshot`
-- [ ] define `Commit`
-- [ ] define `AssumptionChange`
-- [ ] define `MetricChange`
-- [ ] define `DiffResult`
-- [ ] define `ExplanationResult`
+- [x] define `Assumption`
+- [x] define `OutputMetric`
+- [x] define `ModelSnapshot`
+- [x] define `Commit`
+- [x] define `AssumptionChange`
+- [x] define `MetricChange`
+- [x] define `DiffResult`
+- [x] define `ExplanationResult` (also `MetricTrend`, `ExplanationAssumptionRef`)
 
 ### Verification
-- [ ] inspect `lib/domain/types.ts`
-- [ ] run `pnpm typecheck`
-- [ ] add minimal type import smoke test if useful
+- [x] inspect `src/lib/domain/types.ts`
+- [x] run `pnpm typecheck`
+- [x] add minimal type import smoke test if useful
 
 ### Done when
-- [ ] types compile with no TS errors
-- [ ] file reviewed manually
+- [x] types compile with no TS errors
+- [x] file reviewed manually
 
 ---
 
@@ -90,32 +90,32 @@ Define exact TypeScript types for assumptions, outputs, commits, diffs, explanat
 Create a static seed model with realistic default assumptions.
 
 ### Files
-- [ ] `lib/domain/model.ts`
+- [x] `src/lib/domain/model.ts`
 
 ### Tasks
-- [ ] define seed assumptions:
-  - [ ] `conversion_rate`
-  - [ ] `launch_month_offset`
-  - [ ] `monthly_traffic`
-  - [ ] `arpu`
-  - [ ] `monthly_burn`
-  - [ ] `starting_cash`
-- [ ] export helper to return initial assumptions
+- [x] define seed assumptions:
+  - [x] `conversion_rate`
+  - [x] `launch_month_offset`
+  - [x] `monthly_traffic`
+  - [x] `arpu`
+  - [x] `monthly_burn`
+  - [x] `starting_cash`
+- [x] export helper to return initial assumptions
 
 ### Verification
-- [ ] inspect file
-- [ ] run `pnpm typecheck`
-- [ ] add unit test asserting seed assumptions shape
+- [x] inspect file
+- [x] run `pnpm typecheck`
+- [x] add unit test asserting seed assumptions shape
 
 ### Tests
-- [ ] `model.test.ts`
-  - [ ] seed returns expected keys
-  - [ ] seed values are valid
+- [x] `model.test.ts`
+  - [x] seed returns expected keys
+  - [x] seed values are valid
 
 ### Done when
-- [ ] `pnpm test` passes
-- [ ] file reviewed
-- [ ] `pnpm typecheck` passes
+- [x] `pnpm test` passes
+- [x] file reviewed
+- [x] `pnpm typecheck` passes
 
 ---
 
@@ -124,38 +124,40 @@ Create a static seed model with realistic default assumptions.
 Implement pure functions for customers, MRR, ARR, runway.
 
 ### Files
-- [ ] `lib/domain/calc.ts`
+- [x] `src/lib/domain/calc.ts`
 
 ### Tasks
-- [ ] implement `calculateCustomers`
-- [ ] implement `calculateMRR`
-- [ ] implement `calculateARR`
-- [ ] implement `calculateRunway`
-- [ ] implement `calculateOutputs`
+- [x] implement `calculateCustomers`
+- [x] implement `calculateMRR`
+- [x] implement `calculateARR`
+- [x] implement `calculateRunway`
+- [x] implement `calculateOutputs`
 
 ### Formula targets
-- [ ] `customers = monthly_traffic * conversion_rate * launchFactor`
-- [ ] `mrr = customers * arpu`
-- [ ] `arr = mrr * 12`
-- [ ] `runway = starting_cash / monthly_burn`
+- [x] `customers = monthly_traffic * conversion_rate * launchFactor`
+- [x] `mrr = customers * arpu`
+- [x] `arr = mrr * 12`
+- [x] `runway = starting_cash / monthly_burn`
 
 ### Verification
-- [ ] inspect formulas in file
-- [ ] run `pnpm typecheck`
-- [ ] run `pnpm test`
+- [x] inspect formulas in file
+- [x] run `pnpm typecheck`
+- [x] run `pnpm test`
 
 ### Tests
-- [ ] `calc.test.ts`
-  - [ ] customers formula works
-  - [ ] MRR formula works
-  - [ ] ARR formula works
-  - [ ] runway formula works
-  - [ ] same inputs produce same outputs
+- [x] `calc.test.ts`
+  - [x] customers formula works
+  - [x] MRR formula works
+  - [x] ARR formula works
+  - [x] runway formula works
+  - [x] same inputs produce same outputs
 
 ### Done when
-- [ ] all calc tests pass
-- [ ] formulas reviewed manually
-- [ ] `pnpm typecheck` passes
+- [x] all calc tests pass
+- [x] formulas reviewed manually
+- [x] `pnpm typecheck` passes
+
+**Notes:** `launchFactor` from `calculateLaunchFactor`: `1` when `launch_month_offset <= 0` (live), `0` when `> 0` (prelaunch). `runway` is `Infinity` if `monthly_burn === 0`, `NaN` if burn `< 0`. `calculateOutputs` also echoes `monthly_burn` for UI parity.
 
 ---
 
