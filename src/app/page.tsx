@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 
 import { AssumptionsTable } from "@/components/assumptions-table";
 import { OutputCards } from "@/components/output-cards";
+import { VersioningPanel } from "@/components/versioning-panel";
 import { calculateOutputs } from "@/lib/domain/calc";
 import { createSeedAssumptions } from "@/lib/domain/model";
 import type { Assumption } from "@/lib/domain/types";
@@ -113,6 +114,7 @@ export default function Home() {
           }}
         />
         <OutputCards outputs={outputs} />
+        <VersioningPanel assumptions={draft} />
       </main>
     </div>
   );

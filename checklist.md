@@ -280,21 +280,23 @@ Persist full snapshots for version history.
 User can save current draft as a new version.
 
 ### Files
-- [ ] `app/page.tsx`
-- [ ] `app/api/commit/route.ts`
-- [ ] optional modal/component file
+- [x] `src/app/page.tsx`
+- [x] `src/app/api/commit/route.ts`
+- [x] `src/app/api/commits/route.ts` (list for refresh)
+- [x] `src/components/versioning-panel.tsx`
+- [x] `src/lib/server/commit-store-singleton.ts`
 
 ### Tasks
-- [ ] add save version button
-- [ ] add commit message input/modal
-- [ ] send assumptions to API
-- [ ] server recomputes outputs
-- [ ] server persists full snapshot
-- [ ] UI refreshes commit list
+- [x] add save version button
+- [x] add commit message input/modal
+- [x] send assumptions to API
+- [x] server recomputes outputs
+- [x] server persists full snapshot
+- [x] UI refreshes commit list
 
 ### Verification
-- [ ] inspect route and UI files
-- [ ] run `pnpm test`
+- [x] inspect route and UI files
+- [x] run `pnpm test`
 - [ ] manual browser verification with `pnpm dev`:
   - [ ] click save
   - [ ] enter message
@@ -309,8 +311,10 @@ User can save current draft as a new version.
 ### Done when
 - [ ] commit can be created from UI
 - [ ] persisted data verified
-- [ ] `pnpm typecheck` passes
-- [ ] tests pass where applicable
+- [x] `pnpm typecheck` passes
+- [x] tests pass where applicable
+
+**Notes:** `POST /api/commit` validates with `commitRequestSchema`, runs `calculateOutputs`, appends via file-backed `getCommitStore()`. `process.cwd()` join uses `/* turbopackIgnore: true */` for clean `pnpm build`. Invalid assumptions return **400** with flattened Zod issues (shown in UI).
 
 ---
 
