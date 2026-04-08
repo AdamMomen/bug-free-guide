@@ -99,11 +99,15 @@ function tooltipPosition(
   anchor: string | undefined,
 ): { top: number; left: number; maxWidth: number } {
   const margin = 12;
-  const maxWidth = Math.min(360, window.innerWidth - margin * 2);
+  const innerWidth =
+    typeof window !== "undefined" ? window.innerWidth : 1024;
+  const innerHeight =
+    typeof window !== "undefined" ? window.innerHeight : 768;
+  const maxWidth = Math.min(360, innerWidth - margin * 2);
 
   if (!anchor || !rect) {
     return {
-      top: Math.max(margin, (window.innerHeight - 200) / 2),
+      top: Math.max(margin, (innerHeight - 200) / 2),
       left: margin,
       maxWidth,
     };
@@ -111,14 +115,14 @@ function tooltipPosition(
 
   const preferBelowTop = rect.bottom + margin;
   const cardApproxHeight = 200;
-  const fitsBelow = preferBelowTop + cardApproxHeight < window.innerHeight;
+  const fitsBelow = preferBelowTop + cardApproxHeight < innerHeight;
   const top = fitsBelow
     ? preferBelowTop
     : Math.max(margin, rect.top - cardApproxHeight - margin);
 
   const left = Math.min(
     Math.max(margin, rect.left),
-    window.innerWidth - maxWidth - margin,
+    innerWidth - maxWidth - margin,
   );
 
   return { top, left, maxWidth };
