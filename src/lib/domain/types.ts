@@ -47,6 +47,19 @@ export interface DiffResult {
   metricChanges: MetricChange[];
 }
 
+/** `POST /api/compare` — older commit is `previous`, newer is `next` (sorted by `createdAt`). */
+export interface CompareCommitSummary {
+  id: string;
+  message: string;
+  createdAt: string;
+}
+
+export interface CompareApiResponse {
+  previous: CompareCommitSummary;
+  next: CompareCommitSummary;
+  diff: DiffResult;
+}
+
 /** Assumption row as it contributes to an explain-why answer */
 export interface ExplanationAssumptionRef {
   key: string;

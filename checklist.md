@@ -394,36 +394,36 @@ Compare two snapshots by business meaning, not raw JSON.
 User can compare two selected versions and see semantic diff.
 
 ### Files
-- [ ] `app/api/compare/route.ts`
-- [ ] `components/diff-panel.tsx`
+- [x] `src/app/api/compare/route.ts`
+- [x] `src/components/diff-panel.tsx` (wired from `src/components/versioning-panel.tsx`)
 
 ### Tasks
-- [ ] create compare endpoint
-- [ ] load 2 commits
-- [ ] call diff engine
-- [ ] render changed assumptions
-- [ ] render changed outputs
-- [ ] render deltas in readable way
+- [x] create compare endpoint
+- [x] load 2 commits
+- [x] call diff engine
+- [x] render changed assumptions
+- [x] render changed outputs
+- [x] render deltas in readable way
 
 ### Verification
-- [ ] inspect route/component files
-- [ ] run `pnpm test`
-- [ ] manual browser verification:
-  - [ ] select 2 commits
-  - [ ] compare works
-  - [ ] assumptions changes visible
-  - [ ] output deltas visible
+- [x] inspect route/component files
+- [x] run `pnpm test`
+- [x] manual browser verification (`pnpm dev`, http://localhost:3000):
+  - [x] select 2 commits
+  - [x] compare works
+  - [x] assumptions changes visible
+  - [x] output deltas visible
 
 ### Tests
-- [ ] API compare test optional
-- [ ] diff engine tests required
-- [ ] manual verification required
+- [x] `src/app/api/compare/route.test.ts`
+- [x] diff engine tests required (`diff.test.ts`)
+- [x] manual verification required
 
 ### Done when
-- [ ] semantic diff visible in UI
-- [ ] output matches expected changes
-- [ ] `pnpm typecheck` passes
-- [ ] tests pass
+- [x] semantic diff visible in UI (confirm in browser)
+- [x] output matches expected changes (route test + diff tests)
+- [x] `pnpm typecheck` passes
+- [x] tests pass
 
 ---
 

@@ -132,3 +132,11 @@ export const commitRequestSchema = z.object({
 });
 
 export type CommitRequestInput = z.infer<typeof commitRequestSchema>;
+
+/** Body for `POST /api/compare` (Step 10); order does not matter — server sorts by `createdAt`. */
+export const compareRequestSchema = z.object({
+  commitIdA: z.string().uuid(),
+  commitIdB: z.string().uuid(),
+});
+
+export type CompareRequestInput = z.infer<typeof compareRequestSchema>;

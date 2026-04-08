@@ -4,8 +4,9 @@ import { useMemo, useState } from "react";
 import useSWR from "swr";
 import useSWRMutation from "swr/mutation";
 
+import { DiffPanel } from "@/components/diff-panel";
 import { HistoryList } from "@/components/history-list";
-import type { Assumption, Commit } from "@/lib/domain/types";
+import type { Assumption, Commit, CompareApiResponse } from "@/lib/domain/types";
 
 async function commitsFetcher(url: string): Promise<Commit[]> {
   const res = await fetch(url);
@@ -81,6 +82,11 @@ export function VersioningPanel({ assumptions }: { assumptions: Assumption[] }) 
   });
   const [message, setMessage] = useState("");
   const [compareSelection, setCompareSelection] = useState<string[]>([]);
+  const [comparePayload, setComparePayload] = useState<CompareApiResponse | null>(
+    null,
+  );
+  const [compareBusy, setCompareBusy] = useState(false);
+  const [compareError, setCompareError] = useState<string | null>(null);
 
   /** Drop ids that disappeared from the server list without syncing in an effect (lint-safe). */
   const compareSelectionVisible = useMemo(() => {
@@ -95,6 +101,63 @@ export function VersioningPanel({ assumptions }: { assumptions: Assumption[] }) 
       setMessage("");
     } catch {
       /* error surfaced via saveError */
+    }
+  }
+
+  function setSelectionAndClearCompare(ids: string[]) {
+    setCompareSelection(ids);
+    setComparePayload(null);
+    setCompareError(null);
+  }
+
+  async function handleCompareSelected() {
+    const ids = compareSelectionVisible;
+    if (ids.length !== 2) return;
+    setCompareError(null);
+    setCompareBusy(true);
+    try {
+      const res = await fetch("/api/compare", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          commitIdA: ids[0],
+          commitIdB: ids[1],
+        }),
+      });
+      const data = (await res.json().catch(() => ({}))) as {
+        error?: string;
+        issues?: unknown;
+        previous?: CompareApiResponse["previous"];
+        next?: CompareApiResponse["next"];
+        diff?: CompareApiResponse["diff"];
+      };
+      if (!res.ok) {
+        const detail =
+          typeof data.error === "string" ? data.error : "Compare failed";
+        setCompareError(
+          data.issues != null
+            ? `${detail}: ${JSON.stringify(data.issues)}`
+            : detail,
+        );
+        return;
+      }
+      if (
+        data.previous == null ||
+        data.next == null ||
+        data.diff == null
+      ) {
+        setCompareError("Invalid compare response");
+        return;
+      }
+      setComparePayload({
+        previous: data.previous,
+        next: data.next,
+        diff: data.diff,
+      });
+    } catch {
+      setCompareError("Compare request failed");
+    } finally {
+      setCompareBusy(false);
     }
   }
 
@@ -152,11 +215,31 @@ export function VersioningPanel({ assumptions }: { assumptions: Assumption[] }) 
           No saved versions yet.
         </p>
       ) : (
-        <HistoryList
-          commits={commits}
-          selectedIds={compareSelectionVisible}
-          onSelectedIdsChange={setCompareSelection}
-        />
+        <>
+          <HistoryList
+            commits={commits}
+            selectedIds={compareSelectionVisible}
+            onSelectedIdsChange={setSelectionAndClearCompare}
+          />
+          <div className="mt-3 flex flex-col gap-2">
+            <button
+              type="button"
+              disabled={
+                compareSelectionVisible.length !== 2 || compareBusy
+              }
+              onClick={() => void handleCompareSelected()}
+              className="self-start rounded-md border border-zinc-300 bg-white px-3 py-2 text-xs font-medium text-zinc-800 hover:bg-zinc-50 disabled:cursor-not-allowed disabled:opacity-50 dark:border-zinc-600 dark:bg-zinc-900 dark:text-zinc-200 dark:hover:bg-zinc-800"
+            >
+              {compareBusy ? "Comparing…" : "Compare selected versions"}
+            </button>
+            {compareError ? (
+              <p className="text-sm text-red-600 dark:text-red-400">
+                {compareError}
+              </p>
+            ) : null}
+            {comparePayload ? <DiffPanel data={comparePayload} /> : null}
+          </div>
+        </>
       )}
     </section>
   );
