@@ -1,3 +1,126 @@
 {
-  "commits": []
+  "commits": [
+    {
+      "id": "870ea7c0-4ad2-429d-aada-d18f72034601",
+      "message": "E2E test version",
+      "createdAt": "2026-04-08T15:19:06.732Z",
+      "snapshot": {
+        "assumptions": [
+          {
+            "key": "conversion_rate",
+            "value": 0.042,
+            "rationale": "Early funnel; ~4.2% visit-to-signup."
+          },
+          {
+            "key": "launch_month_offset",
+            "value": 0,
+            "rationale": "0 = live now; positive = months until launch (ramp factor later)."
+          },
+          {
+            "key": "monthly_traffic",
+            "value": 12000,
+            "rationale": "Unique visitors per month to the top of funnel."
+          },
+          {
+            "key": "arpu",
+            "value": 79,
+            "rationale": "Average monthly revenue per paying customer ($)."
+          },
+          {
+            "key": "monthly_burn",
+            "value": 45000,
+            "rationale": "All-in monthly cash burn ($)."
+          },
+          {
+            "key": "starting_cash",
+            "value": 720000,
+            "rationale": "Cash on hand before the modeled period ($)."
+          }
+        ],
+        "outputs": [
+          {
+            "key": "customers",
+            "value": 504.00000000000006
+          },
+          {
+            "key": "mrr",
+            "value": 39816.00000000001
+          },
+          {
+            "key": "arr",
+            "value": 477792.0000000001
+          },
+          {
+            "key": "monthly_burn",
+            "value": 45000
+          },
+          {
+            "key": "runway",
+            "value": 16
+          }
+        ]
+      }
+    },
+    {
+      "id": "a8651fea-afc5-4a0b-818a-caa650522c22",
+      "message": "Browser MCP verify second commit",
+      "createdAt": "2026-04-08T15:23:40.042Z",
+      "snapshot": {
+        "assumptions": [
+          {
+            "key": "conversion_rate",
+            "value": 0.042,
+            "rationale": "Early funnel; ~4.2% visit-to-signup."
+          },
+          {
+            "key": "launch_month_offset",
+            "value": 0,
+            "rationale": "0 = live now; positive = months until launch (ramp factor later)."
+          },
+          {
+            "key": "monthly_traffic",
+            "value": 12000,
+            "rationale": "Unique visitors per month to the top of funnel."
+          },
+          {
+            "key": "arpu",
+            "value": 79,
+            "rationale": "Average monthly revenue per paying customer ($)."
+          },
+          {
+            "key": "monthly_burn",
+            "value": 45000,
+            "rationale": "All-in monthly cash burn ($)."
+          },
+          {
+            "key": "starting_cash",
+            "value": 720000,
+            "rationale": "Cash on hand before the modeled period ($)."
+          }
+        ],
+        "outputs": [
+          {
+            "key": "customers",
+            "value": 504.00000000000006
+          },
+          {
+            "key": "mrr",
+            "value": 39816.00000000001
+          },
+          {
+            "key": "arr",
+            "value": 477792.0000000001
+          },
+          {
+            "key": "monthly_burn",
+            "value": 45000
+          },
+          {
+            "key": "runway",
+            "value": 16
+          }
+        ]
+      }
+    }
+  ]
 }

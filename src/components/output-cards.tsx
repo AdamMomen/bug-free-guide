@@ -10,6 +10,9 @@ const TITLES: Record<string, string> = {
   runway: "Runway",
 };
 
+/** Fixed locale so SSR (Node) and client format numbers the same — avoids hydration mismatch. */
+const OUTPUT_LOCALE = "en-US";
+
 function formatMetric(key: string, value: number): string {
   if (!Number.isFinite(value)) {
     if (value === Infinity) return "∞";
@@ -17,15 +20,15 @@ function formatMetric(key: string, value: number): string {
   }
 
   if (key === "customers") {
-    return value.toLocaleString(undefined, { maximumFractionDigits: 2 });
+    return value.toLocaleString(OUTPUT_LOCALE, { maximumFractionDigits: 2 });
   }
 
   if (key === "runway") {
-    return `${value.toLocaleString(undefined, { maximumFractionDigits: 1 })} mo`;
+    return `${value.toLocaleString(OUTPUT_LOCALE, { maximumFractionDigits: 1 })} mo`;
   }
 
   if (key === "mrr" || key === "arr" || key === "monthly_burn") {
-    return new Intl.NumberFormat(undefined, {
+    return new Intl.NumberFormat(OUTPUT_LOCALE, {
       style: "currency",
       currency: "USD",
       maximumFractionDigits: 0,
